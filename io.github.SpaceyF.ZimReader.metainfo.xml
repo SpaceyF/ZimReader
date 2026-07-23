@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.SpaceyF.ZimReader</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  <name>ZimReader</name>
+  <summary>Read offline Wikipedia (ZIM files) with search, themed to match KDE</summary>
+  <description>
+    <p>
+      A lightweight reader for ZIM files (the offline Wikipedia / Kiwix format).
+      It follows your KDE Plasma light/dark theme, renders articles in a web view,
+      and has a search bar with live title suggestions and full-text search.
+    </p>
+  </description>
+  <launchable type="desktop-id">io.github.SpaceyF.ZimReader.desktop</launchable>
+  <provides>
+    <mediatype>application/x-zim</mediatype>
+  </provides>
+  <categories>
+    <category>Education</category>
+    <category>Viewer</category>
+  </categories>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="0.1.0" date="2026-07-23">
+      <description><p>First version: open ZIMs, search, KDE light/dark theming.</p></description>
+    </release>
+  </releases>
+</component>

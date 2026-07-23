@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=ZimReader
+GenericName=Offline Wikipedia Reader
+Comment=Read ZIM files (offline Wikipedia / Kiwix) with search
+Exec=zimreader %f
+Icon=io.github.SpaceyF.ZimReader
+Terminal=false
+Categories=Education;Qt;KDE;Viewer;
+MimeType=application/x-zim;
+Keywords=zim;wikipedia;kiwix;offline;wiki;encyclopedia;

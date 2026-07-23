@@ -1,0 +1,64 @@
+# flatpak manifest for zimreader.
+#
+# uses the pyside baseapp so pyside6 gets built against the kde runtimes qt, which is the bit
+# that makes the app follow your plasma light/dark colors. libzim + the app get pip-installed on top.
+#
+# honestly just run  ./build-flatpak.sh  and it does all this for you. but if you want it by hand:
+#   flatpak install flathub org.kde.Platform//6.7 org.kde.Sdk//6.7 io.qt.PySide.BaseApp//6.7
+#   flatpak-builder --user --install --force-clean build-dir io.github.SpaceyF.ZimReader.yml
+#   flatpak run io.github.SpaceyF.ZimReader
+
+id: io.github.SpaceyF.ZimReader
+runtime: org.kde.Platform
+runtime-version: '6.7'
+sdk: org.kde.Sdk
+base: io.qt.PySide.BaseApp
+base-version: '6.7'
+command: zimreader
+
+finish-args:
+  - --share=ipc
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --device=dri
+  - --filesystem=home:ro          # so it can actually read your .zim files
+  - --talk-name=org.freedesktop.portal.Desktop
+
+cleanup:
+  - /include
+  - /lib/pkgconfig
+  - /share/man
+  - '*.a'
+  - '*.la'
+  - '*.h'
+
+modules:
+  # libzim + its python bindings. the wheel already bundles native libzim so nothing to compile
+  - name: python3-libzim
+    buildsystem: simple
+    build-options:
+      # flatpak-builder cuts the network per module by default, but pip needs it to reach pypi
+      build-args:
+        - --share=network
+    build-commands:
+      - pip3 install --prefix=${FLATPAK_DEST} --no-cache-dir "libzim>=3.4"
+
+  # the actual app
+  - name: zimreader
+    buildsystem: simple
+    build-options:
+      build-args:
+        - --share=network
+    build-commands:
+      - pip3 install --prefix=${FLATPAK_DEST} --no-cache-dir --no-deps .
+      # drop our own launcher at /app/bin/zimreader (matches command: up top), way more reliable than pips
+      - install -Dm755 zimreader-launcher.sh ${FLATPAK_DEST}/bin/zimreader
+      - install -Dm644 io.github.SpaceyF.ZimReader.desktop
+          ${FLATPAK_DEST}/share/applications/io.github.SpaceyF.ZimReader.desktop
+      - install -Dm644 io.github.SpaceyF.ZimReader.metainfo.xml
+          ${FLATPAK_DEST}/share/metainfo/io.github.SpaceyF.ZimReader.metainfo.xml
+      - install -Dm644 io.github.SpaceyF.ZimReader.svg
+          ${FLATPAK_DEST}/share/icons/hicolor/scalable/apps/io.github.SpaceyF.ZimReader.svg
+    sources:
+      - type: dir
+        path: .
