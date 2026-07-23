@@ -74,3 +74,8 @@ still look right. works on any wikipedia css without having to understand it.
 - webengine inside flatpak needs its sandbox off and gpu compositing off, it crashes otherwise.
   the launcher already handles that; `fix-webengine.sh` does the same to an already-built install
   without a rebuild.
+
+## claude usage
+
+- claude was used to help with zim related importing
+- if you dont like that, dont use it.
